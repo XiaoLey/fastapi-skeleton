@@ -78,7 +78,7 @@
 |   `-- logs                                    ----- 日志目录
 |-- README.md
 |-- docker-compose.yaml
-|-- app.py                                      ----- app主程序
+|-- api_app.py                                  ----- app主程序
 |-- requirements.txt
 |-- scheduler.py                                ----- 调度任务启动入口
 |-- main.py                                     ----- app/api启动入口
