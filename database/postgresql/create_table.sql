@@ -26,8 +26,3 @@ COMMENT ON COLUMN users.gender IS '性别 male，female';
 COMMENT ON COLUMN users.avatar IS '头像';
 COMMENT ON COLUMN users.created_at IS '创建时间';
 COMMENT ON COLUMN users.updated_at IS '更新时间';
-
--- 插入用户，密码均为123456
-INSERT INTO users (username, password, created_at, updated_at) VALUES
-('fake_user1', 'ukPEqhgLpgUFNBwmRjb2+uVzAHMkbeqcUs+MmHGx5RM=', NOW(), NOW()),
-('fake_user2', 'F/zgAxSBr9LSP4CIj01Tr4Z6g56cqUalOxpd32C6GbQ=', NOW(), NOW());
