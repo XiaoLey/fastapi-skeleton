@@ -5,7 +5,7 @@
             "name": "Debug FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/uvicorn_entry.py",
+            "program": "${workspaceFolder}/main.py",
             "args": [],
             "console": "integratedTerminal",
             "justMyCode": false,

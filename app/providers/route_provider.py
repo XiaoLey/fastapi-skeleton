@@ -1,8 +1,9 @@
+from fastapi import FastAPI
 from routes.api import api_router
 from config.config import settings
 
 
-def boot(app):
+def boot(app: FastAPI):
     # 注册api路由[routes/api.py]
     app.include_router(api_router, prefix=settings.API_PREFIX)
 

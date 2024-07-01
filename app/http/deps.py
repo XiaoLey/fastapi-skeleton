@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 
@@ -34,10 +35,10 @@ async def get_auth_user(
     return user
 
 
+@asynccontextmanager
 async def get_db(db_state=Depends(reset_db_state)):
     try:
-        database.db.connect()
+        await database.objects.connect()
         yield
     finally:
-        if not database.db.is_closed():
-            database.db.close()
+        await database.objects.close()

@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI
 
+from app.providers.app_lifespan import lifespan
 from app.providers import app_provider
 from app.providers import logging_provider
 from app.providers import handle_exception
@@ -9,7 +10,7 @@ from app.providers import route_provider
 
 
 def create_app() -> FastAPI:
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
 
     register(app, logging_provider)
     register(app, app_provider)

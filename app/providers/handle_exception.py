@@ -1,13 +1,14 @@
 from fastapi.exception_handlers import request_validation_exception_handler, http_exception_handler
 from fastapi.exceptions import RequestValidationError
 from starlette.responses import JSONResponse
+from fastapi import FastAPI
 
 from app.exceptions.exception import AuthenticationError, AuthorizationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi import Request
 
 
-def register(app):
+def register(app: FastAPI):
 
     @app.exception_handler(AuthenticationError)
     async def authentication_exception_handler(request: Request, e: AuthenticationError):

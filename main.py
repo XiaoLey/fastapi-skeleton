@@ -1,8 +1,5 @@
-from bootstrap.application import create_app
+import uvicorn
+from config.config import settings
 
-app = create_app()
 
-
-@app.get("/")
-async def root():
-    return "welcome to fastapi skeleton"
+uvicorn.run(app="api_app:app", host=settings.SERVER_HOST, port=settings.SERVER_PORT, headers=[("server", settings.NAME)])
