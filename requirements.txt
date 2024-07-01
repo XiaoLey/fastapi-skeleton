@@ -4,6 +4,7 @@ jose~=1.0.0
 loguru~=0.7.2
 aiopg~=1.4.0
 peewee~=3.17.5
+peewee_async~=0.10.0
 starlette~=0.37.2
 uvicorn~=0.30.1
 psycopg2-binary
