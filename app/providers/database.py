@@ -1,8 +1,8 @@
 from contextvars import ContextVar
 
 import redis
-from peewee import _ConnectionState, MySQLDatabase
-from playhouse.pool import PooledMySQLDatabase
+from peewee import _ConnectionState
+from peewee_async import Manager, PooledPostgresqlDatabase
 
 from config.database import settings, redis_settings
 
@@ -27,24 +27,19 @@ async def reset_db_state():
     db._state.reset()
 
 
-db = MySQLDatabase(
-    settings.DB_DATABASE,
-    user=settings.DB_USER,
-    host=settings.DB_HOST,
-    password=settings.DB_PASSWORD,
-    port=settings.DB_PORT
+db = PooledPostgresqlDatabase(
+    settings.POSTGRES_DB,
+    user=settings.POSTGRES_USER,
+    host=settings.POSTGRES_HOST,
+    password=settings.POSTGRES_PASSWORD,
+    port=settings.POSTGRES_PORT,
+    max_connections=20,    # 最大连接数，根据需要调整
 )
-
 db._state = PeeweeConnectionState()
 
+objects = Manager(db)
+
 # redis
-# redis_client = redis.Redis(
-#     host=redis_settings.REDIS_HOST,
-#     port=redis_settings.REDIS_PORT,
-#     db=redis_settings.REDIS_DB,
-#     password=redis_settings.REDIS_PASSWORD,
-#     decode_responses=True
-# )
 redis_pool = redis.ConnectionPool(
     host=redis_settings.REDIS_HOST,
     port=redis_settings.REDIS_PORT,

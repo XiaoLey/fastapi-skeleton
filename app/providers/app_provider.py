@@ -1,6 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.providers.database import db, redis_client
+from app.providers.database import db, objects, redis_client
 from config.config import settings
 
 
@@ -19,9 +19,10 @@ def register(app):
     # This hook ensures that the connection is closed when we've finished
     # processing the request.
     @app.on_event("shutdown")
-    def shutdown():
+    async def shutdown():
+        await objects.close()  # 这行内部已经调用了 database.close_async()
         if not db.is_closed():
-            db.close()
+            await db.close_async()  # 确保数据库连接池被正确关闭
 
         if redis_client:
             redis_client.close()

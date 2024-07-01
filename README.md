@@ -75,9 +75,11 @@
 |-- storage
 |   `-- logs                                    ----- 日志目录
 |-- README.md
-|-- main.py                                     ----- app/api启动入口
+|-- docker-compose.yaml
+|-- main.py                                     ----- app主程序
 |-- requirements.txt
-`-- scheduler.py                                ----- 调度任务启动入口
+|-- scheduler.py                                ----- 调度任务启动入口
+|-- uvicorn_entry.py                            ----- app/api启动入口
 ```
 
 ## 集成的模块
@@ -96,7 +98,7 @@
 
 - 系统配置
 
-基于 `pydantic.BaseSettings`，使用 `.env` 文件设置环境变量。配置文件按功能模块划分，默认定义了app基础配置、数据库配置(mysql+redis)、日志配置、认证配置
+基于 `pydantic_settings.BaseSettings`，使用 `.env` 文件设置环境变量。配置文件按功能模块划分，默认定义了app基础配置、数据库配置(mysql+redis)、日志配置、认证配置
 
 - 数据库 ORM模型
 

@@ -1,12 +1,13 @@
 import os
 
-from pydantic import BaseSettings, Field
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
     NAME: str = "fastapi"
     DEBUG: bool = False
     ENV: str = "production"
+    API_PREFIX: str = "/api"
 
     BASE_PATH: str = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
 
@@ -20,6 +21,7 @@ class Settings(BaseSettings):
         env_prefix = 'APP_'
         env_file = ".env"
         env_file_encoding = 'utf-8'
+        extra = "ignore"  # 忽略额外的输入
 
 
 settings = Settings()

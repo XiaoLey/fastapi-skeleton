@@ -24,8 +24,8 @@ class PasswordGrant:
     def __init__(self, request_data: OAuth2PasswordRequest):
         self.request_data = request_data
 
-    def respond(self):
-        user = User.get_or_none(User.username == self.request_data.username)
+    async def respond(self):
+        user = await User.async_().get_or_none(User.username == self.request_data.username)
         if not user:
             raise AuthenticationError(message='Incorrect email or password')
 
@@ -44,18 +44,18 @@ class CellphoneGrant:
     def __init__(self, request_data: OAuth2CellphoneRequest):
         self.request_data = request_data
 
-    def respond(self):
+    async def respond(self):
         cellphone = self.request_data.cellphone
         code = self.request_data.verification_code
         if not random_code_verifier.check(cellphone, code):
             raise AuthenticationError(message='Incorrect verification code')
 
-        user = User.get_or_none(User.cellphone == cellphone)
+        user = await User.async_().get_or_none(User.cellphone == cellphone)
         # 验证通过，用户不存在则创建
         if not user:
             username = 'srcp_' + alphanumeric_random()
             password = hashing.get_password_hash(alphanumeric_random())
-            user = User.create(cellphone=cellphone, username=username, password=password)
+            user = await User.async_().create(cellphone=cellphone, username=username, password=password)
 
         # 用户状态校验
         if not user.is_enabled():

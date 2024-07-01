@@ -11,7 +11,7 @@ router = APIRouter(
 
 
 @router.get("/me", response_model=UserDetail, dependencies=[Depends(get_db)])
-def me(auth_user: User = Depends(deps.get_auth_user)):
+async def me(auth_user: User = Depends(deps.get_auth_user)):
     """
     当前登录用户信息
     """

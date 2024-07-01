@@ -7,13 +7,14 @@ from app.providers import database
 from app.providers.database import reset_db_state
 from app.services.auth import jwt_helper
 from jose import jwt
+from config.config import settings as config_settings
 
 oauth2_token_schema = OAuth2PasswordBearer(
-    tokenUrl="token"
+    tokenUrl=f"{config_settings.API_PREFIX[1:]}/auth/token/form",
 )
 
 
-def get_auth_user(
+async def get_auth_user(
         token: str = Depends(oauth2_token_schema)
 ) -> User:
     try:
@@ -24,7 +25,7 @@ def get_auth_user(
         raise AuthenticationError(message="Could not validate credentials")
 
     user_id = payload.get('sub')
-    user = User.get_or_none(User.id == user_id)
+    user = await User.async_().get_or_none(User.id == user_id)
 
     if not user:
         raise AuthenticationError(message="User not found")
@@ -33,7 +34,7 @@ def get_auth_user(
     return user
 
 
-def get_db(db_state=Depends(reset_db_state)):
+async def get_db(db_state=Depends(reset_db_state)):
     try:
         database.db.connect()
         yield

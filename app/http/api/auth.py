@@ -1,4 +1,8 @@
-from fastapi import APIRouter, Depends, Body
+from json import JSONDecodeError
+from typing import Annotated, Union
+from fastapi import APIRouter, Depends, Body, Request
+from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import ValidationError
 from starlette.responses import JSONResponse
 
 from app.http.deps import get_db
@@ -14,26 +18,35 @@ router = APIRouter(
 )
 
 
-@router.post("/token", response_model=Token, dependencies=[Depends(get_db)])
-def token(request_data: OAuth2PasswordRequest):
+@router.post("/token/form", response_model=Token, dependencies=[Depends(get_db)])
+async def token_form(request_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     """
     用户名+密码登录
     """
     grant = PasswordGrant(request_data)
-    return grant.respond()
+    return await grant.respond()
+
+
+@router.post("/token", response_model=Token, dependencies=[Depends(get_db)])
+async def token(request_data: OAuth2PasswordRequest):
+    """
+    用户名+密码登录
+    """
+    grant = PasswordGrant(request_data)
+    return await grant.respond()
 
 
 @router.post("/cellphone/token", response_model=Token, dependencies=[Depends(get_db)])
-def cellphone_token(request_data: OAuth2CellphoneRequest):
+async def cellphone_token(request_data: OAuth2CellphoneRequest):
     """
     手机号+验证码登录
     """
     grant = CellphoneGrant(request_data)
-    return grant.respond()
+    return await grant.respond()
 
 
 @router.post("/cellphone/verification_code")
-def send_verification_code(cellphone: str = Body(..., embed=True)):
+async def send_verification_code(cellphone: str = Body(..., embed=True)):
     """
     发送验证码
     """

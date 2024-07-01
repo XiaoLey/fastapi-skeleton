@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 from config.config import settings as app_settings
 
 """
@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = 'utf-8'
+        extra = "ignore"  # 忽略额外的输入
 
 
 settings = Settings()
