@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from app.providers.database import db, objects, redis_client
+from app.providers.database import objects, redis_client
 
 
 @asynccontextmanager
