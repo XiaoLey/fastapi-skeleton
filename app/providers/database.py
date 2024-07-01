@@ -2,7 +2,8 @@ from contextvars import ContextVar
 
 import redis
 from peewee import _ConnectionState
-from peewee_async import Manager, PooledPostgresqlDatabase
+from peewee_async import Manager
+from peewee_asyncext import PooledPostgresqlExtDatabase
 
 from config.database import settings, redis_settings
 
@@ -27,7 +28,7 @@ async def reset_db_state():
     db._state.reset()
 
 
-db = PooledPostgresqlDatabase(
+db = PooledPostgresqlExtDatabase(
     settings.POSTGRES_DB,
     user=settings.POSTGRES_USER,
     host=settings.POSTGRES_HOST,
