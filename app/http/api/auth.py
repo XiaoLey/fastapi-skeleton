@@ -1,8 +1,6 @@
-from json import JSONDecodeError
-from typing import Annotated, Union
-from fastapi import APIRouter, Depends, Body, Request
+from typing import Annotated
+from fastapi import APIRouter, Depends, Body
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import ValidationError
 from starlette.responses import JSONResponse
 
 from app.http.deps import get_db
