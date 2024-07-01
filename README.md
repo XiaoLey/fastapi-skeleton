@@ -68,8 +68,9 @@
 |   |-- database.py                             ----- 数据库配置
 |   `-- logging.py                              ----- 日志配置
 |-- database
-|   `-- migrations                              ----- 初始化SQL
-|       `-- 2024_06_30_create_users_table.sql
+|   `-- postgresql                              ----- PostgreSQL初始化语句
+|       |-- add_extensions.sql
+|       `-- create_table.sql
 |-- routes                                      ----- 路由目录
 |   |-- __init__.py
 |   `-- api.py                                  ----- api路由
