@@ -1,10 +1,5 @@
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'gender') THEN
-    CREATE TYPE gender AS ENUM ('male', 'female', 'unknown');
-  END IF;
-END
-$$;
+-- 创建性别枚举类型
+SELECT create_enum_type_if_not_exists('gender', 'male', 'female', 'unknown');
 
 -- 创建用户表users
 CREATE TABLE IF NOT EXISTS users (
