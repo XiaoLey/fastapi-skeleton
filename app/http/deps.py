@@ -35,7 +35,6 @@ async def get_auth_user(
     return user
 
 
-@asynccontextmanager
 async def get_db(db_state=Depends(reset_db_state)):
     try:
         await database.db_mgr.connect()
