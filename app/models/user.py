@@ -4,9 +4,6 @@ from app.models.base_model import BaseModel
 
 
 class User(BaseModel):
-    class Meta:
-        table_name = 'users'
-
     id = IntegerField(primary_key=True)
     username = CharField(unique=True)
     password = CharField()
@@ -17,6 +14,9 @@ class User(BaseModel):
     nickname = CharField()
     gender = CharField(default='unknown')
     avatar = CharField()
+
+    class Meta:
+        table_name = 'users'
 
     def is_enabled(self):
         return self.state == 'enabled'
