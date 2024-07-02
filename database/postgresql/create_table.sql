@@ -1,17 +1,25 @@
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'gender') THEN
+    CREATE TYPE gender AS ENUM ('male', 'female', 'unknown');
+  END IF;
+END
+$$;
+
 -- 创建用户表users
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  username VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL DEFAULT '',
-  cellphone VARCHAR(45) UNIQUE,
-  email VARCHAR(255) UNIQUE,
-  email_verified_at TIMESTAMP,
-  state VARCHAR(50) NOT NULL DEFAULT 'enabled',
-  nickname VARCHAR(255) NOT NULL DEFAULT '',
-  gender VARCHAR(10) NOT NULL DEFAULT 'unknown',
-  avatar VARCHAR(255) NOT NULL DEFAULT '',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,                                      -- 自增ID
+  username VARCHAR(255) NOT NULL UNIQUE,                      -- 用户名
+  password VARCHAR(255) NOT NULL DEFAULT '',                  -- 密码
+  cellphone VARCHAR(45) UNIQUE,                               -- 手机
+  email VARCHAR(255) UNIQUE,                                  -- 邮箱
+  email_verified_at TIMESTAMP,                                -- 邮箱验证时间
+  state VARCHAR(50) NOT NULL DEFAULT 'enabled',               -- 状态
+  nickname VARCHAR(255) NOT NULL DEFAULT '',                  -- 昵称
+  gender gender NOT NULL DEFAULT 'unknown',                   -- 性别
+  avatar VARCHAR(255) NOT NULL DEFAULT '',                    -- 头像
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 创建时间
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP   -- 更新时间
 );
 
 -- 添加列注释
