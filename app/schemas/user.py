@@ -10,9 +10,9 @@ from app.support.helper import format_datetime
 class UserBase(BaseModel):
     id: int
     username: str
-    nickname: str
+    nickname: Optional[str] = None
     gender: str
-    avatar: str
+    avatar: Optional[str] = None
 
     class Config:
         from_attributes = True
