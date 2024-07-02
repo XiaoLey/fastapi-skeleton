@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from app.exceptions.exception import AuthenticationError
 from app.models.user import User
+from app.providers.database import db_mgr
 from app.services.auth import jwt_helper, hashing, random_code_verifier
 from app.services.auth.oauth2_schema import OAuth2CellphoneRequest, OAuth2PasswordRequest
 from app.support.helper import alphanumeric_random
@@ -25,7 +26,7 @@ class PasswordGrant:
         self.request_data = request_data
 
     async def respond(self):
-        user = await User.async_().get_or_none(User.username == self.request_data.username)
+        user = await db_mgr.get_or_none(User, User.username == self.request_data.username)
         if not user:
             raise AuthenticationError(message='Incorrect email or password')
 
@@ -50,12 +51,12 @@ class CellphoneGrant:
         if not random_code_verifier.check(cellphone, code):
             raise AuthenticationError(message='Incorrect verification code')
 
-        user = await User.async_().get_or_none(User.cellphone == cellphone)
+        user = await db_mgr.get_or_none(User, User.cellphone == cellphone)
         # 验证通过，用户不存在则创建
         if not user:
             username = 'srcp_' + alphanumeric_random()
             password = hashing.get_password_hash(alphanumeric_random())
-            user = await User.async_().create(cellphone=cellphone, username=username, password=password)
+            user = await db_mgr.create(User, cellphone=cellphone, username=username, password=password)
 
         # 用户状态校验
         if not user.is_enabled():

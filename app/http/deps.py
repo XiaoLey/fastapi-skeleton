@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from app.exceptions.exception import AuthenticationError
 from app.models.user import User
 from app.providers import database
-from app.providers.database import reset_db_state
+from app.providers.database import db_mgr, reset_db_state
 from app.services.auth import jwt_helper
 from jose import jwt
 from config.config import settings as config_settings
@@ -26,7 +26,7 @@ async def get_auth_user(
         raise AuthenticationError(message="Could not validate credentials")
 
     user_id = payload.get('sub')
-    user = await User.async_().get_or_none(User.id == user_id)
+    user = await db_mgr.get_or_none(User, User.id == user_id)
 
     if not user:
         raise AuthenticationError(message="User not found")

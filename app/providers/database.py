@@ -38,7 +38,7 @@ db = PooledPostgresqlExtDatabase(
 )
 db._state = PeeweeConnectionState()
 
-objects = Manager(db)
+db_mgr = Manager(db)
 
 # redis
 redis_pool = redis.ConnectionPool(
