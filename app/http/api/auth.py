@@ -1,8 +1,8 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, Body
 from fastapi.security import OAuth2PasswordRequestForm
-from starlette.responses import JSONResponse
 
+from app.exceptions.exception import InvalidCellphoneError
 from app.http.deps import get_db
 from app.schemas.auth import Token
 from app.services.auth import random_code_verifier
@@ -49,7 +49,7 @@ async def send_verification_code(cellphone: str = Body(..., embed=True)):
     发送验证码
     """
     if not is_chinese_cellphone(cellphone):
-        return JSONResponse(status_code=422, content={"message": 'invalid cellphone'})
+        raise InvalidCellphoneError()
 
     code = random_code_verifier.make(cellphone)
     # fake send

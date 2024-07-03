@@ -20,17 +20,17 @@ async def get_auth_user(
     try:
         payload = jwt_helper.get_payload_by_token(token)
     except jwt.ExpiredSignatureError:
-        raise AuthenticationError(message="Token Expired")
+        raise AuthenticationError(detail="Token Expired")
     except (jwt.JWTError, jwt.JWTClaimsError):
-        raise AuthenticationError(message="Could not validate credentials")
+        raise AuthenticationError(detail="Could not validate credentials")
 
     user_id = payload.get('sub')
     user = await db_mgr.get_or_none(User, User.id == user_id)
 
     if not user:
-        raise AuthenticationError(message="User not found")
+        raise AuthenticationError(detail="User not found")
     if not user.is_enabled():
-        raise AuthenticationError(message='Inactive user')
+        raise AuthenticationError(detail='Inactive user')
     return user
 
 

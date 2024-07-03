@@ -25,15 +25,15 @@ class PasswordGrant:
     async def respond(self):
         user = await db_mgr.get_or_none(User, User.username == self.request_data.username)
         if not user:
-            raise AuthenticationError(message='Incorrect email or password')
+            raise AuthenticationError(detail='Incorrect email or password')
 
         # 用户密码校验
         if not (user.password and hashing.verify_password(self.request_data.password, user.password)):
-            raise AuthenticationError(message='Incorrect email or password')
+            raise AuthenticationError(detail='Incorrect email or password')
 
         # 用户状态校验
         if not user.is_enabled():
-            raise AuthenticationError(message='Inactive user')
+            raise AuthenticationError(detail='Inactive user')
 
         return create_token_response_from_user(user)
 
@@ -46,7 +46,7 @@ class CellphoneGrant:
         cellphone = self.request_data.cellphone
         code = self.request_data.verification_code
         if not random_code_verifier.check(cellphone, code):
-            raise AuthenticationError(message='Incorrect verification code')
+            raise AuthenticationError(detail='Incorrect verification code')
 
         user = await db_mgr.get_or_none(User, User.cellphone == cellphone)
         # 验证通过，用户不存在则创建
@@ -57,6 +57,6 @@ class CellphoneGrant:
 
         # 用户状态校验
         if not user.is_enabled():
-            raise AuthenticationError(message='Inactive user')
+            raise AuthenticationError(detail='Inactive user')
 
         return create_token_response_from_user(user)
