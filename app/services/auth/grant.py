@@ -3,6 +3,7 @@ from datetime import timedelta
 from app.exceptions.exception import AuthenticationError
 from app.models.user import User
 from app.providers.database import db_mgr
+from app.schemas.auth import Token
 from app.services.auth import jwt_helper, hashing, random_code_verifier
 from app.services.auth.oauth2_schema import OAuth2CellphoneRequest, OAuth2PasswordRequest
 from app.support.helper import alphanumeric_random
@@ -14,11 +15,7 @@ def create_token_response_from_user(user):
     expires_in = int(expires_delta.total_seconds())
     token = jwt_helper.create_access_token(user.id, expires_delta)
 
-    return {
-        "token_type": "bearer",
-        "expires_in": expires_in,
-        "access_token": token,
-    }
+    return Token(token_type='bearer', expires_in=expires_in, access_token=token)
 
 
 class PasswordGrant:
