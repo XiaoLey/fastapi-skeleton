@@ -24,7 +24,7 @@ async def db_test():
 
 
 @router.get("/redis_test")
-async def redis_test():
+def redis_test():
     redis_client.incr('fastapi:test')
     return {'value': redis_client.get('fastapi:test')}
 

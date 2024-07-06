@@ -44,7 +44,7 @@ async def cellphone_token(request_data: OAuth2CellphoneRequest):
 
 
 @router.post("/cellphone/verification_code")
-async def send_verification_code(cellphone: str = Body(..., embed=True)):
+def send_verification_code(cellphone: str = Body(..., embed=True)):
     """
     发送验证码
     """
